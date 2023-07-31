@@ -7,7 +7,7 @@ import (
 	"net/http"
 	"os"
 
-	"github.com/fatih/color"
+    "github.com/jedib0t/go-pretty/v6/table"
 )
 
 type Address struct {
@@ -73,14 +73,17 @@ func (a Address) GetUf() string {
 }
 
 func (a Address) Show() {
-    color.Blue("======================================")
-    fmt.Printf("CEP:%s\n", a.Cep)
-    color.Blue("======================================")
-    fmt.Printf("Logradouro:\t%s\n", a.Logradouro)
-    fmt.Printf("Complemento:\t%s\n", a.Complemento)
-    fmt.Printf("Bairro:\t\t%s\n", a.Bairro)
-    fmt.Printf("Localidade:\t%s\n", a.Localidade)
-    fmt.Printf("UF:\t\t%s\n", a.Uf)
-    color.Blue("======================================")
+    t := table.NewWriter()
+    t.SetOutputMirror(os.Stdout)
+    t.SetStyle(table.StyleLight)
+    t.AppendHeader(table.Row{"CEP", a.Cep})
+    t.AppendRows([]table.Row{
+        {"Logradouro", a.Logradouro},
+        {"Complemento", a.Complemento},
+        {"Bairro", a.Bairro},
+        {"Localidade", a.Localidade},
+        {"UF", a.Uf},
+    })
+    t.Render()
 }
 
